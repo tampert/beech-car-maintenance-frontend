@@ -1,0 +1,38 @@
+<mat-card class="maintenance-card">
+  <mat-card-title>New Maintenance Job</mat-card-title>
+  <mat-card-content>
+    <form>
+      <mat-form-field class="full-width">
+        <mat-label>Customer Name</mat-label>
+        <input matInput placeholder="Enter customer name" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Car Model</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let car of cars" [value]="car">{{
+            car.model
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Maintenance Type</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let job of maintenanceJobsTypes" [value]="job">{{
+            job.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Preferred Date</mat-label>
+        <input matInput [matDatepicker]="picker" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary">Submit Request</button>
+    </form>
+  </mat-card-content>
+</mat-card>

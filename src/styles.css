@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --mat-primary: #1565c0; /* Deep Blue */
+  --mat-accent: #ff9800; /* Orange */
+  --mat-warn: #d32f2f; /* Red */
+}
+
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-fab {
+  --mdc-theme-primary: var(--mat-primary);
+  --mdc-theme-secondary: var(--mat-accent);
+  --mdc-theme-error: var(--mat-warn);
+}
+
+.mat-toolbar {
+  background-color: var(--mat-primary) !important;
+  color: white !important;
+}

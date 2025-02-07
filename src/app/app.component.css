@@ -1,0 +1,22 @@
+/* Ensure the app layout is mobile-friendly */
+
+.sidenav-container {
+  height: 100vh;
+}
+
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* Show the menu button only on small screens */
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: block;
+  }
+}
