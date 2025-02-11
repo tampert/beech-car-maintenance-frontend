@@ -8,11 +8,14 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FormControl } from '@angular/forms';
+import { FormsModule, FormControl, FormGroup } from '@angular/forms';
 import { Car } from '../../models/car';
+import { MaintenanceJobTypes } from '../../models/maintenanceJobsTypes';
 import { CommonModule } from '@angular/common';
 
+import { ReactiveFormsModule } from '@angular/forms';
 import { MockDataService } from '../../services/mock-data.service';
+import { Part } from '../../models/part';
 
 @Component({
   selector: 'app-maintenance-form',
@@ -29,18 +32,33 @@ import { MockDataService } from '../../services/mock-data.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './maintenance-form.component.html',
   styleUrl: './maintenance-form.component.css',
 })
 export class MaintenanceFormComponent {
-  customerName = new FormControl('');
+  // Mock
   cars: Car[] = [];
+  parts: Part[] = [];
   maintenanceJobsTypes: any[] = [];
+  // Form
+  maintenanceForm = new FormGroup({
+    customerName: new FormControl<string | null>('jo'),
+    formCarBrand: new FormControl<string | null>(''),
+    formCarModel: new FormControl<string | null>(''),
+    formCarPart: new FormControl<string | null>(''),
+    formMaintenanceType: new FormControl<MaintenanceJobTypes | null>(null),
+  });
 
   constructor(private mockDataService: MockDataService) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  private loadData(): void {
     this.mockDataService.getCars().subscribe((cars) => {
       this.cars = cars;
     });
@@ -48,5 +66,73 @@ export class MaintenanceFormComponent {
     this.mockDataService.getMaintenanceJobTypes().subscribe((jobTypes) => {
       this.maintenanceJobsTypes = jobTypes;
     });
+
+    this.mockDataService.getParts().subscribe((parts) => {
+      this.parts = parts;
+    });
+  }
+  onSubmit(): void {
+    if (this.maintenanceForm.valid) {
+      console.log(this.maintenanceForm.value);
+    }
+  }
+
+  getMaintenanceTypes() {
+    let car = this.cars.find(
+      (item) => item.model === this.maintenanceForm.get('formCarModel')?.value
+    );
+
+    if (car?.type) {
+      if (car?.type === 'generic') {
+        return [
+          ...new Set(
+            this.maintenanceJobsTypes.filter((job) => job.type === car.type)
+          ),
+        ];
+      }
+      return [
+        ...new Set(
+          this.maintenanceJobsTypes.filter((job) => job.type !== 'generic')
+        ),
+      ];
+    }
+
+    return this.maintenanceJobsTypes;
+  }
+
+  get car() {
+    return this.maintenanceForm.get('formCarModel') as FormControl;
+  }
+
+  get brands() {
+    return [...new Set(this.cars.map((item) => item.brand))];
+  }
+
+  get models() {
+    let brand = this.maintenanceForm.get('formCarBrand')?.value;
+    return [
+      ...new Set(
+        this.cars
+          .filter((item) => item.brand === brand)
+          .map((item) => item.model)
+      ),
+    ];
+  }
+
+  get Costs() {
+    if (!this.maintenanceForm.get('formCarModel')?.value) {
+      return 0;
+    }
+    return (
+      this.maintenanceForm.get('formMaintenanceType')?.value?.fixedRate ||
+      this.maintenanceForm.get('formMaintenanceType')?.value?.price
+    );
+  }
+
+  getParts() {
+    let car = this.cars.find(
+      (item) => item.model === this.maintenanceForm.get('formCarModel')?.value
+    );
+    return this.parts.filter((p) => p.type === car?.type);
   }
 }

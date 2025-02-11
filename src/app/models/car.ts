@@ -3,6 +3,7 @@ export class Car {
     public id: number,
     public brand: string,
     public model: string,
-    public year: number
+    public year: number,
+    public type: string
   ) {}
 }
