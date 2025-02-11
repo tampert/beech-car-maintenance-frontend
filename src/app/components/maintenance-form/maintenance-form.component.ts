@@ -45,7 +45,7 @@ export class MaintenanceFormComponent {
   maintenanceJobsTypes: any[] = [];
   // Form
   maintenanceForm = new FormGroup({
-    customerName: new FormControl<string | null>('jo'),
+    customerName: new FormControl<string | null>(''),
     formCarBrand: new FormControl<string | null>(''),
     formCarModel: new FormControl<string | null>(''),
     formCarPart: new FormControl<string | null>(''),
