@@ -43,7 +43,7 @@
         <mat-label>Car Part</mat-label>
         <mat-select formControlName="formCarPart">
           <mat-option *ngFor="let part of getParts()" [value]="part">{{
-            part.name
+            part
           }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -58,6 +58,19 @@
             job.name
           }}</mat-option>
         </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        class="full-width"
+        *ngIf="maintenanceForm.get('formCarPart')?.value && isCustom"
+      >
+        <mat-label>Service hours</mat-label>
+        <input matInput formControlName="formServicHours" />
+        <mat-error
+          *ngIf="maintenanceForm.get('formServicHours')?.hasError('min')"
+        >
+          The value is lower than the minimum
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field
@@ -78,19 +91,57 @@
   class="maintenance-card"
   *ngIf="maintenanceForm.get('customerName')?.value"
 >
-  <mat-card-title>New Maintenance Details</mat-card-title>
+  <mat-card-title>Details</mat-card-title>
   <mat-card-content>
     <p *ngIf="maintenanceForm.get('customerName')?.value">Customer name</p>
-    <strong>{{ maintenanceForm.get("customerName")?.value }}</strong>
-    <p *ngIf="maintenanceForm.get('formCarBrand')?.value">Car brand</p>
-    <strong>{{ maintenanceForm.get("formCarBrand")?.value }}</strong>
-    <p *ngIf="maintenanceForm.get('formCarModel')?.value">Car model</p>
-    <strong>{{ maintenanceForm.get("formCarModel")?.value }}</strong>
-    <p *ngIf="maintenanceForm.get('formCarPart')?.value">Car part</p>
-    <strong>{{ maintenanceForm.get("formCarPart")?.value }}</strong>
-    <p *ngIf="maintenanceForm.get('formMaintenanceType')?.value">Car Cost</p>
-    <strong *ngIf="maintenanceForm.get('formMaintenanceType')?.value">{{
-      Costs | currency
+    <strong class="pl-8">{{
+      maintenanceForm.get("customerName")?.value
     }}</strong>
+    <p *ngIf="maintenanceForm.get('formCarBrand')?.value">Car brand</p>
+    <strong class="pl-8">{{
+      maintenanceForm.get("formCarBrand")?.value
+    }}</strong>
+    <p *ngIf="maintenanceForm.get('formCarModel')?.value">Car model</p>
+    <strong class="pl-8">{{
+      maintenanceForm.get("formCarModel")?.value
+    }}</strong>
+    <p *ngIf="maintenanceForm.get('formCarPart')?.value">Car part</p>
+    <strong class="pl-8">{{
+      maintenanceForm.get("formCarPart")?.value
+    }}</strong>
+    <p *ngIf="totalCost">Car Cost</p>
+    <!-- <strong *ngIf="maintenanceForm.get('formMaintenanceType')?.value">{{
+      Costs | currency
+    }}</strong> -->
+    <div *ngIf="totalCost">
+      <strong class="pl-8">
+        price per hour
+        {{
+          this.maintenanceForm.get("formMaintenanceType")?.value?.price
+        }} </strong
+      ><br />
+      <strong class="pl-8">
+        serviceHours:
+        {{
+          this.maintenanceForm.get("formMaintenanceType")?.value?.serviceHours
+        }} </strong
+      ><br />
+      <strong class="pl-8">
+        fixedRate:{{
+          this.maintenanceForm.get("formMaintenanceType")?.value?.fixedRate
+        }} </strong
+      ><br />
+      <strong class="pl-8">
+        total:
+
+        {{ this.maintenanceForm.get("formMaintenanceType")?.value?.price }} x
+        {{
+          this.maintenanceForm.get("formMaintenanceType")?.value?.serviceHours
+        }}
+        +
+        {{ this.maintenanceForm.get("formMaintenanceType")?.value?.fixedRate }}
+        = {{ totalCost | currency }}</strong
+      >
+    </div>
   </mat-card-content>
 </mat-card>

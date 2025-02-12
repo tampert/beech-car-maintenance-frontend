@@ -82,29 +82,65 @@ export class MockDataService {
 
   getMaintenanceJobTypes() {
     return of([
-      { id: 1, name: 'Oil Change', serviceHours: 1.5, fixedRate: 50.0 },
+      {
+        id: 1,
+        name: 'Oil Change',
+        serviceHours: 2,
+        price: 10.0,
+        fixedRate: 50.0,
+      },
       {
         id: 2,
         name: 'Engine Air Filter Replacement',
-        serviceHours: 0.5,
+        serviceHours: 2.5,
+        price: 10.0,
         fixedRate: 150.0,
       },
       {
         id: 3,
         name: 'Cabin Air Filter Replacement',
-        serviceHours: 2.5,
+        serviceHours: 3.5,
+        price: 10.0,
         fixedRate: 25.0,
       },
       {
         id: 4,
         name: 'Windshield Wiper Blades',
         serviceHours: 1.5,
+        price: 10.0,
         fixedRate: 50.0,
       },
-      { id: 5, name: 'Bulb Replacement', serviceHours: 1.5, fixedRate: 50.0 },
-      { id: 6, name: 'Oil Filter', type: 'generic', price: 10.0 },
-      { id: 7, name: 'Fluid Check', type: 'generic', price: 20.0 },
-      { id: 8, name: 'Battery Replacement', type: 'generic', price: 30.0 },
+      {
+        id: 5,
+        name: 'Bulb Replacement',
+        serviceHours: 1.5,
+        fixedRate: 50.0,
+        price: 10.0,
+      },
+      {
+        id: 6,
+        name: 'Oil Filter',
+        type: 'generic',
+        serviceHours: 1,
+        price: 10.0,
+        fixedRate: 5.0,
+      },
+      {
+        id: 7,
+        name: 'Fluid Check',
+        type: 'generic',
+        serviceHours: 1,
+        price: 20.0,
+        fixedRate: 5.0,
+      },
+      {
+        id: 8,
+        name: 'Battery Replacement',
+        type: 'generic',
+        serviceHours: 1,
+        price: 30.0,
+        fixedRate: 5.0,
+      },
     ]);
   }
   getMaintenanceJobs() {
@@ -113,10 +149,34 @@ export class MockDataService {
 
   getParts() {
     return of([
-      { id: 0, name: 'Oil Filter', type: 'custom', price: 10.0 },
-      { id: 1, name: 'Engine Oil', type: 'custom', price: 30.0 },
-      { id: 2, name: 'Summer Tires', type: 'generic', price: 50.0 },
-      { id: 3, name: 'Winter Tires', type: 'generic', price: 50.0 },
+      {
+        id: 0,
+        name: 'Oil Filter',
+        type: 'custom',
+        price: 10.0,
+        fixedRate: 5.0,
+      },
+      {
+        id: 1,
+        name: 'Engine Oil',
+        type: 'custom',
+        price: 30.0,
+        fixedRate: 5.0,
+      },
+      {
+        id: 2,
+        name: 'Summer Tires',
+        type: 'generic',
+        price: 50.0,
+        fixedRate: 5.0,
+      },
+      {
+        id: 3,
+        name: 'Winter Tires',
+        type: 'generic',
+        price: 50.0,
+        fixedRate: 5.0,
+      },
     ]);
   }
 }

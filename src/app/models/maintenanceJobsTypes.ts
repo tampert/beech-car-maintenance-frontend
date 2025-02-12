@@ -4,7 +4,7 @@ export class MaintenanceJobTypes {
     public name: string,
     public type: string,
     public price: number,
-    public serviceHours?: undefined,
-    public fixedRate?: undefined
+    public serviceHours: number,
+    public fixedRate: number
   ) {}
 }

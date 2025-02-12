@@ -8,7 +8,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormsModule,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Car } from '../../models/car';
 import { MaintenanceJobTypes } from '../../models/maintenanceJobsTypes';
 import { CommonModule } from '@angular/common';
@@ -50,12 +55,22 @@ export class MaintenanceFormComponent {
     formCarModel: new FormControl<string | null>(''),
     formCarPart: new FormControl<string | null>(''),
     formMaintenanceType: new FormControl<MaintenanceJobTypes | null>(null),
+    formServicHours: new FormControl<number | null>(0, [Validators.min(0)]),
   });
 
   constructor(private mockDataService: MockDataService) {}
 
   ngOnInit(): void {
     this.loadData();
+    this.maintenanceForm
+      .get('formMaintenanceType')
+      ?.valueChanges.subscribe((maintenanceType) => {
+        if (maintenanceType) {
+          this.maintenanceForm
+            .get('formServicHours')
+            ?.setValue(maintenanceType.serviceHours);
+        }
+      });
   }
 
   private loadData(): void {
@@ -133,6 +148,30 @@ export class MaintenanceFormComponent {
     let car = this.cars.find(
       (item) => item.model === this.maintenanceForm.get('formCarModel')?.value
     );
-    return this.parts.filter((p) => p.type === car?.type);
+    return this.parts
+      .filter((p) => p.type === car?.type)
+      .map((item) => item.name);
+  }
+
+  get isCustom() {
+    return true;
+    let part = this.parts.find(
+      (item) => item.name === this.maintenanceForm.get('formCarPart')?.value
+    );
+    return part?.type === 'custom';
+  }
+
+  get totalCost(): number {
+    const maintenanceType = this.maintenanceForm.get(
+      'formMaintenanceType'
+    )?.value;
+
+    if (!maintenanceType) return 0;
+
+    const price = maintenanceType.price || 0;
+    const serviceHours = maintenanceType.serviceHours || 0;
+    const fixedRate = maintenanceType.fixedRate || 0;
+
+    return price * serviceHours + fixedRate;
   }
 }

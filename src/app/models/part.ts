@@ -3,6 +3,7 @@ export class Part {
     public id: number,
     public name: string,
     public type: string,
-    price: number
+    price: number,
+    fixPrice: number
   ) {}
 }
