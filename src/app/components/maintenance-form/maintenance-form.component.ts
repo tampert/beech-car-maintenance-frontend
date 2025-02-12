@@ -71,6 +71,12 @@ export class MaintenanceFormComponent {
             ?.setValue(maintenanceType.serviceHours);
         }
       });
+
+    this.maintenanceForm
+      .get('formMaintenanceType')
+      ?.valueChanges.subscribe(() => {
+        this.totalCost; // Triggers recalculation
+      });
   }
 
   private loadData(): void {
